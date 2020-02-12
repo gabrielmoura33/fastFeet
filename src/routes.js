@@ -9,7 +9,7 @@ import authMiddleware from './app/middlewares/auth';
 const routes = new Router();
 
 routes.post('/users', UserController.store);
-routes.post('/session', SessionController.store);
+routes.post('/sessions', SessionController.store);
 
 //List of Functions availables only for Administrators
 routes.use(authMiddleware);
