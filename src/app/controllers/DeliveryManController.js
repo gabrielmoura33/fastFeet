@@ -1,6 +1,6 @@
-class DeliveryManController{
-  async index(req, res){
-    return res.json({error: false});
+class DeliveryManController {
+  async index(req, res) {
+    return res.json({ error: false });
   }
 }
 
