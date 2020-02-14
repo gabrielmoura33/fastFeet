@@ -54,23 +54,25 @@ class DeliveryManController {
       return res.status(401).json({ error: 'Validation Fails' });
     }
 
-    const deliveryManExists = await DeliveryMan.findAll({
-      where: { id: req.body.id },
-    });
+    const deliveryMan = await DeliveryMan.findByPk(req.params.id);
 
-    if (!deliveryManExists) {
+    if (!deliveryMan) {
       res.status(404).json({ error: 'DeliveryMan Not Found' });
     }
 
-    const deliveryMan = await DeliveryMan.findByPk(req.body.id);
+    const { id, name, email } = await deliveryMan.update(req.body);
 
-    const { id, name, email } = deliveryMan.update(req.body);
-
-    return res.json(id, name, email);
+    return res.json({ id, name, email });
   }
 
   async destroy(req, res) {
-    return res.json({ sucess: true });
+    const deliveryMan = await DeliveryMan.findByPk(req.params.id);
+    if (!deliveryMan) {
+      return res.status(404).json({ error: 'DeliveryMan Not Foud' });
+    }
+    (await deliveryMan).destroy();
+
+    return res.status(200).json({ sucess: true });
   }
 }
 
