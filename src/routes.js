@@ -5,6 +5,7 @@ import UserController from './app/controllers/UserController';
 
 import SessionController from './app/controllers/SessionController';
 import RecipientController from './app/controllers/RecipientController';
+import DeliverieController from './app/controllers/DeliverieController';
 import DeliveryManController from './app/controllers/DeliveryManController';
 import SignatureController from './app/controllers/SignatureController';
 import FileController from './app/controllers/FileController';
@@ -32,6 +33,15 @@ routes.post('/deliveryman', DeliveryManController.store);
 routes.put('/deliveryman/:id', DeliveryManController.update);
 routes.delete('/deliveryman/:id', DeliveryManController.destroy);
 
+routes.get('/deliveryman/:deliveryman_id/deliveries', DeliverieController.show);
+routes.post(
+  '/deliveryman/:deliveryman_id/deliveries',
+  DeliverieController.store
+);
+routes.put(
+  '/deliveryman/:deliveryman_id/deliveries',
+  DeliverieController.update
+);
 routes.post('/files', uploads.single('file'), FileController.store);
 
 export default routes;

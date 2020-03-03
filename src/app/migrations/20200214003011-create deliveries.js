@@ -14,7 +14,7 @@ module.exports = {
         onDelete: 'SET NULL',
         allownull: false,
       },
-      deliveryMan_id: {
+      deliveryman_id: {
         type: Sequelize.INTEGER,
         references: { model: 'delivery_mans', key: 'id' },
         onUpdate: 'CASCADE',
@@ -38,7 +38,7 @@ module.exports = {
       },
       start_date: {
         type: Sequelize.DATE,
-        allowNull: false,
+        allowNull: true,
       },
       end_date: {
         type: Sequelize.DATE,
