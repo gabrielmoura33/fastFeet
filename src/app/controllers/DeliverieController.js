@@ -13,6 +13,7 @@ import Deliverie from '../models/Deliverie';
 import DeliveryMan from '../models/DeliveryMan';
 import Signature from '../models/Signature';
 import Withdraws from '../schemas/Withdraw';
+import Mail from '../../lib/Mail';
 
 class DeliverieController {
   async show(req, res) {
@@ -47,6 +48,24 @@ class DeliverieController {
     }
     req.body.deliveryman_id = req.params.deliveryman_id;
     const deliverie = await Deliverie.create(req.body);
+
+    const deliveryman = await DeliveryMan.findOne({
+      where: { id: req.params.deliveryman_id },
+    });
+
+    if (deliveryman.email) {
+      await Mail.sendMail({
+        to: `${deliveryman.name} <${deliveryman.email}>`,
+        subject: 'Nova Encomenda Disponivel',
+        template: 'newRecipient',
+        context: {
+          deliveryman: deliveryman.name,
+          product: deliverie.product,
+          recipientName: deliveryman.name,
+        },
+      });
+    }
+
     return res.json(deliverie);
   }
 
@@ -148,6 +167,19 @@ class DeliverieController {
       signature_id: req.body.signature_id,
     });
     return res.json(del);
+  }
+
+  async destroy(req, res) {
+    const delivery = await Deliverie.findOne({
+      where: { id: req.body.id },
+    });
+
+    if (!delivery) {
+      return res.status(404).json({ error: 'Delivery Not Found' });
+    }
+
+    delivery.update({ canceled_at: new Date() });
+    return res.json(delivery);
   }
 }
 export default new DeliverieController();

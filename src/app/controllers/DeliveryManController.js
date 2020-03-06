@@ -25,7 +25,7 @@ class DeliveryManController {
         .required(),
     });
 
-    if (!schema.isValid()) {
+    if (!(await schema.isValid())) {
       return res.status(401).json({ error: 'Validation Fails' });
     }
 
